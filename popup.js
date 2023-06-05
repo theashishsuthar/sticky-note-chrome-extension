@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Array to store the selected tasks
+  let selectedTasks = [];
+
     // Function to add a task to the list and local storage
     function addTaskToList(task) {
         const taskList = document.getElementById('task-list');
@@ -11,11 +14,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const taskTitle = document.createElement('h3');
         taskTitle.textContent = task;
     
+        // Add event listener for selecting task item
+        listItem.addEventListener('click', function() {
+          selectTask(task);
+        });
+    
         // Create the edit button
         const editButton = document.createElement('button');
         editButton.classList.add('edit-button');
         editButton.innerHTML = '<i class="fas fa-pen"></i>';
-        editButton.addEventListener('click', function() {
+        editButton.addEventListener('click', function(event) {
+          event.stopPropagation(); // Prevent selecting task when clicking the edit button
           editTask(task, listItem);
         });
     
@@ -23,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
         deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        deleteButton.addEventListener('click', function() {
+        deleteButton.addEventListener('click', function(event) {
+          event.stopPropagation(); // Prevent selecting task when clicking the delete button
           deleteTask(task, listItem);
         });
     
@@ -35,6 +45,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Append the list item to the task list
         taskList.appendChild(listItem);
       }
+
+
+      // Function to select a task
+  function selectTask(task) {
+    const selectedTask = document.getElementById('selected-task');
+    selectedTask.textContent = task;
+  }
+    
   
     // Function to load tasks from local storage
     function loadTasks() {
@@ -99,19 +117,18 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   
-    // Function to copy the selected task text to the clipboard
-    function copyToClipboard() {
-      const select = document.getElementById('task-select');
-      const selectedTask = select.value;
-  
-      if (selectedTask) {
-        navigator.clipboard.writeText(selectedTask).then(function() {
-          alert('Task copied to clipboard!');
-        }, function() {
-          alert('Unable to copy task to clipboard.');
-        });
-      }
+   // Function to copy the selected task text to the clipboard
+  function copyToClipboard() {
+    const selectedTask = document.getElementById('selected-task').textContent;
+
+    if (selectedTask) {
+      navigator.clipboard.writeText(selectedTask).then(function() {
+        alert('Task copied to clipboard!');
+      }, function() {
+        alert('Unable to copy task to clipboard.');
+      });
     }
+  }
   
     // Event listener for the add button
     document.getElementById('add-button').addEventListener('click', function() {
