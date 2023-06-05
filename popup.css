@@ -50,7 +50,14 @@ body {
     justify-content: space-between;
     padding: 10px;
     margin-bottom: 10px;
+    margin-right: 10px;
+    
     border: 1px solid #ccc;
+  }
+  
+
+  .task-item input[type="checkbox"] {
+    margin-right: 15px; /* Adjust the margin value as needed */
   }
   
   .task-item h3 {
